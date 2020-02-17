@@ -12,7 +12,7 @@ description: Everything interesting
 avatar: https://avatars1.githubusercontent.com/u/998789?s=400&u=486941a7ef9d6f5df4d2e41cb4c07ca7c7391e90&v=4
 
 # Setting remote theme
-theme: minimal-mistakes-jekyll
+remote_theme: mmistakes/minimal-mistakes
 
 #
 # Flags below are optional
