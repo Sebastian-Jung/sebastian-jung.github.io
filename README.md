@@ -1,0 +1,1 @@
+This is the source code of Sebastian Jung's public academic website: sebastian-jung.github.io forked from [Jon Barron's repository](https://github.com/jonbarron/jonbarron.github.io). Feel free to clone this code for your own personal use.
