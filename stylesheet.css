@@ -140,6 +140,35 @@ span.highlight {
   font-weight: 700; /* bold */
 }
 
+/* Affiliations logo row */
+.affiliations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0;
+  margin-bottom: 8px;
+}
+
+.affiliation {
+  display: inline-block;
+  text-decoration: none;
+  transition: transform .15s ease, filter .15s ease;
+}
+
+.affiliation img {
+  display: block;
+  height: 80px;         /* adjust for desired visual */
+  max-width: 180px;
+  object-fit: contain;
+}
+
+.affiliation:hover {
+  transform: translateY(-3px);
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+}
+
 .colored-box {
     color: black;
     padding: 20px;
