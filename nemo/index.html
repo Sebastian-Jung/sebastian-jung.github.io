@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="description" content="Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception. Code, paper, and examples for 3D object perception.">
+<meta name="keywords" content="3D vision, point cloud, few-shot learning, NeMO, computer vision">
+<meta name="author" content="Sebastian Jung">
+<meta name="robots" content="index, follow">
 <meta charset="UTF-8">
 <title>Your Project Title</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,6 +12,7 @@
 <script type="module" src="https://cdn.jsdelivr.net/npm/three@0.164/build/three.module.js"></script>
 <script type="module" src="https://cdn.jsdelivr.net/npm/three@0.164/examples/jsm/loaders/PCDLoader.js"></script>
 <script type="module" src="https://cdn.jsdelivr.net/npm/three@0.164/examples/jsm/controls/OrbitControls.js"></script>
+<link rel="stylesheet" href="style.css">
 <style>
 body { margin:0; font-family:'Inter', sans-serif; background:#fafafa; color:#333; }
 .navbar { background:white; padding:20px 40px; box-shadow:0 2px 4px rgba(0,0,0,0.1); position:sticky; top:0; z-index:100; }
@@ -24,7 +29,7 @@ h2 { font-size:32px; font-weight:700; margin-bottom:15px; }
 .gallery-grid img { width:100%; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.15); cursor:pointer; transition:0.2s; }
 .gallery-grid img:hover { transform:scale(1.03); }
 .slider-container { display:flex; align-items:center; justify-content:center; gap:10px; }
-.slider-btn { padding:10px 18px; background:#0066cc; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:600; }
+.slider-btn { padding:8px 10px; background:#0066cc; color:white; border:none; border-radius:100px; cursor:pointer; font-weight:1000; }
 .slider-btn:disabled { background:#999; cursor:not-allowed; }
 #pc-slider-container { margin-top:20px; text-align:center; }
 #pcviewerDynamic { width:100%; height:500px; background:#111; border-radius:12px; }
@@ -32,23 +37,23 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
 </style>
 </head>
 <body>
-<div class="navbar"><strong>Your Project Name</strong></div>
 <div class="header">
-<div class="title">Your Project Title</div>
-<div class="authors">Your Name<sup>1</sup>, Collaborator<sup>2</sup>, Advisor<sup>1</sup></div>
+<div class="title">Finding NeMO</div>
+
+<div class="subtitle">A Geometry-Aware Representation of Template Views for Few-Shot Perception</div>
+<div class="banner">🏆 3DV 2026 — Oral Presentation</div>
+<br>
+<br>
+<div class="authors"><a href="../index.html">Sebastian Jung</a>, Leonard Klüpfel, Rudolph Triebel, Maximilian Durner</div>
 <div class="links"><a href="paper.pdf">📄 Paper</a><a href="#">📝 arXiv</a><a href="#">💻 Code</a><a href="#results">📊 Results</a></div>
 </div>
 <div class="section"><img id="teaser" src="assets/teaser.png" alt="Teaser image"></div>
-<div class="section" id="abstract"><h2>Abstract</h2><p>Replace this text with your abstract.</p></div>
-<div class="section"><h2>Image Gallery (auto-generated)</h2><div id="gallery" class="gallery-grid"></div></div>
-<div class="section" id="pc-section"><h2>3D Point Cloud Slider</h2><p>Slide through multiple point cloud examples:</p>
+<div class="section" id="abstract"><h2>Abstract</h2><p>We present <b>Neural Memory Object (NeMO)</b>, a novel object-centric representation that can be used to detect, segment and estimate the 6DoF pose of objects unseen during training using RGB images. Our method consists of an encoder that requires only a few RGB template views depicting an object to generate a sparse object-like point cloud using a learned UDF containing semantic and geometric information. Next, a decoder takes the object encoding together with a query image to generate a variety of dense predictions. Through extensive experiments, we show that our method can be used for few-shot object perception without requiring any camera-specific parameters or retraining on target data. Our proposed concept of outsourcing object information in a NeMO and using a single network for multiple perception tasks enhances interaction with novel objects, improving scalability and efficiency by enabling quick object onboarding without retraining or extensive pre-processing. We report competitive and state-of-the-art results on various datasets and perception tasks of the BOP benchmark, demonstrating the versatility of our approach. Code and synthetic dataset will be released.</p></div>
+<div class="section" id="pc-section"><h2>Examples</h2><p>Slide through multiple NeMO examples:</p>
 <div id="pcviewerDynamic"></div>
-<div id="pc-slider-container"><button id="prevPC" class="slider-btn">← Previous</button><button id="nextPC" class="slider-btn">Next →</button></div></div>
-<div class="section" id="results"><h2>Results (Videos)</h2>
-<video width="100%" controls><source src="assets/demo1.mp4" type="video/mp4"></video><br><br>
-<video width="100%" controls><source src="assets/demo2.mp4" type="video/mp4"></video></div>
-<div class="section"><h2>BibTeX</h2><div class="citation-box">@article{your2025paper,title={Your Project Title},author={You and Collaborator and Advisor},journal={CVPR},year={2025}}</div></div>
-<footer>© 2025 Your Name — Project Page Template</footer>
+<div id="pc-slider-container"><button id="prevPC" class="slider-btn">←</button><button id="nextPC" class="slider-btn">→</button></div></div>
+<div class="section"><h2>BibTeX</h2><div class="citation-box">@inproceedings{jung2026,title={Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception},author={Sebastian Jung and Leonard Klüpfel and Rudolph Triebel and Maximilian Durner},journal={3DV},year={2026}}</div></div>
+<footer>© 2025 Sebastian Jung — Finding NeMO</footer>
 <script type="module">
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.164/build/three.module.js";
 import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.164/examples/jsm/controls/OrbitControls.js";
