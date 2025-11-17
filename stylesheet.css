@@ -134,6 +134,12 @@ span.highlight {
   background-color: #ffffd0;
 }
 
+/* New: bold red highlight for words or short sentences */
+.highlight-red {
+  color: #c62828; /* bold red color */
+  font-weight: 700; /* bold */
+}
+
 .colored-box {
     color: black;
     padding: 20px;
