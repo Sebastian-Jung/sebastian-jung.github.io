@@ -7,7 +7,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-V4WY96CK58');
 </script>
 <meta name="description" content="Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception. Code, paper, and examples for 3D object perception.">
@@ -18,9 +17,6 @@
 <title>NeMO</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-<script type="module" src="https://cdn.jsdelivr.net/npm/three@0.164/build/three.module.js"></script>
-<script type="module" src="https://cdn.jsdelivr.net/npm/three@0.164/examples/jsm/loaders/PCDLoader.js"></script>
-<script type="module" src="https://cdn.jsdelivr.net/npm/three@0.164/examples/jsm/controls/OrbitControls.js"></script>
 <link rel="stylesheet" href="style.css">
 <style>
 body { margin:0; font-family:'Inter', sans-serif; background:#fafafa; color:#333; }
@@ -32,59 +28,83 @@ body { margin:0; font-family:'Inter', sans-serif; background:#fafafa; color:#333
 .section { max-width:900px; margin:40px auto; padding:0 20px; }
 h2 { font-size:32px; font-weight:700; margin-bottom:15px; }
 #teaser { width:100%; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
-#pcviewer { width:100%; height:500px; background:#111; border-radius:12px; }
 .citation-box { background:#f0f0f0; padding:20px; border-radius:12px; font-family:monospace; }
-.gallery-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:15px; }
-.gallery-grid img { width:100%; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.15); cursor:pointer; transition:0.2s; }
-.gallery-grid img:hover { transform:scale(1.03); }
-.slider-container { display:flex; align-items:center; justify-content:center; gap:10px; }
-.slider-btn { padding:8px 10px; background:#0066cc; color:white; border:none; border-radius:100px; cursor:pointer; font-weight:1000; }
-.slider-btn:disabled { background:#999; cursor:not-allowed; }
-#pc-slider-container { margin-top:20px; text-align:center; }
-#pcviewerDynamic { width:100%; height:500px; background:#111; border-radius:12px; }
+.carousel-container { position:relative; width:100%; max-width:900px; height:500px; overflow:hidden; border-radius:12px; background:#FFFFFF; margin:20px auto; }
+.carousel-track { display:flex; height:100%; transition:transform 0.5s ease; }
+.viewer-wrapper { flex:0 0 100%; height:100%; }
+.arrow { position:absolute; top:0; width:50px; height:100%; background:rgba(128,128,128,0.3); border:none; cursor:pointer; font-size:40px; font-weight:bold; color:#fff; display:flex; align-items:center; justify-content:center; z-index:10; }
+.arrow:hover { background:rgba(255,255,255,0.5); }
+#prev { left:0; }
+#next { right:0; }
 footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
 </style>
 </head>
 <body>
+
 <div class="header">
-<div class="title">Finding NeMO 🐠</div>
-
-<div class="subtitle">A Geometry-Aware Representation of Template Views for Few-Shot Perception</div>
-<div class="banner">🏆 3DV 2026 — Oral Presentation</div>
-<br>
-<br>
-<div class="authors"><a href="../index.html">Sebastian Jung</a>, Leonard Klüpfel, Rudolph Triebel, Maximilian Durner</div>
-<div class="links"><a href="paper.pdf">📄 Paper</a><a href="#">📝 arXiv</a><a href="https://github.com/DLR-RM/nemo">💻 Code</a><a href="#results">📊 Results</a></div>
+  <div class="title">Finding NeMO 🐠</div>
+  <div class="subtitle">A Geometry-Aware Representation of Template Views for Few-Shot Perception</div>
+  <div class="banner">🏆 3DV 2026 — Oral Presentation</div>
+  <br><br>
+  <div class="authors"><a href="../index.html">Sebastian Jung</a>, Leonard Klüpfel, Rudolph Triebel, Maximilian Durner</div>
+  <div class="links"><a href="paper.pdf">📄 Paper</a><a href="#">📝 arXiv</a><a href="https://github.com/DLR-RM/nemo">💻 Code</a><a href="#results">📊 Results</a></div>
 </div>
-<div class="section"><img id="teaser" src="assets/teaser.png" alt="Teaser image"></div>
-<div class="section" id="abstract"><h2>Abstract</h2><p>We present <b>Neural Memory Object (NeMO)</b>, a novel object-centric representation that can be used to detect, segment and estimate the 6DoF pose of objects unseen during training using RGB images. Our method consists of an encoder that requires only a few RGB template views depicting an object to generate a sparse object-like point cloud using a learned UDF containing semantic and geometric information. Next, a decoder takes the object encoding together with a query image to generate a variety of dense predictions. Through extensive experiments, we show that our method can be used for few-shot object perception without requiring any camera-specific parameters or retraining on target data. Our proposed concept of outsourcing object information in a NeMO and using a single network for multiple perception tasks enhances interaction with novel objects, improving scalability and efficiency by enabling quick object onboarding without retraining or extensive pre-processing. We report competitive and state-of-the-art results on various datasets and perception tasks of the BOP benchmark, demonstrating the versatility of our approach. Code and synthetic dataset will be released.</p></div>
-<div class="section" id="pc-section"><h2>Examples</h2><p>Slide through multiple NeMO examples:</p>
-<div id="pcviewerDynamic"></div>
-<div id="pc-slider-container"><button id="prevPC" class="slider-btn">←</button><button id="nextPC" class="slider-btn">→</button></div></div>
-<div class="section"><h2>BibTeX</h2><div class="citation-box">@inproceedings{jung2026,title={Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception},author={Sebastian Jung and Leonard Klüpfel and Rudolph Triebel and Maximilian Durner},journal={3DV},year={2026}}</div></div>
-<footer>© 2025 Sebastian Jung — Finding NeMO</footer>
+
+<div class="section">
+  <img id="teaser" src="assets/teaser.png" alt="Teaser image">
+</div>
+
+<div class="section" id="abstract">
+  <h2>Abstract</h2>
+  <p>We present <b>Neural Memory Object (NeMO)</b>, a novel object-centric representation that can be used to detect, segment and estimate the 6DoF pose of objects unseen during training using RGB images. Our method consists of an encoder that requires only a few RGB template views depicting an object to generate a sparse object-like point cloud using a learned UDF containing semantic and geometric information. Next, a decoder takes the object encoding together with a query image to generate a variety of dense predictions. Through extensive experiments, we show that our method can be used for few-shot object perception without requiring any camera-specific parameters or retraining on target data. Our proposed concept of outsourcing object information in a NeMO and using a single network for multiple perception tasks enhances interaction with novel objects, improving scalability and efficiency by enabling quick object onboarding without retraining or extensive pre-processing. We report competitive and state-of-the-art results on various datasets and perception tasks of the BOP benchmark, demonstrating the versatility of our approach. Code and synthetic dataset will be released.</p>
+</div>
+
+<div class="section" id="pc-section">
+  <h2>Interactive Surface Estimation Examples</h2>
+  <p>Using the pointmap predictions of the NeMO Decoder, we can estimate object-centric surfaces using only a few images. Our method is able to robustly estimate camera poses and object surfaces in various settings - A static object and a moving camera, a static camera and an object rotated in hand and both moving cameras and the object being in different scenarios, including occlusion. We also show the estimated positions of the cameras relative to the object (not to scale):</p>
+  <div class="carousel-container">
+    <div class="carousel-track" id="carouselTrack">
+      <div class="viewer-wrapper" id="viewer1"></div>
+      <div class="viewer-wrapper" id="viewer2"></div>
+      <div class="viewer-wrapper" id="viewer3"></div>
+    </div>
+    <button class="arrow" id="prev">‹</button>
+    <button class="arrow" id="next">›</button>
+  </div>
+</div>
+
 <script type="module">
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.164/build/three.module.js";
-import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.164/examples/jsm/controls/OrbitControls.js";
-import { PCDLoader } from "https://cdn.jsdelivr.net/npm/three@0.164/examples/jsm/loaders/PCDLoader.js";
+import { PointCloudViewer } from './PointCloudViewer.js';
 
-const galleryImages = ["assets/img1.png","assets/img2.png","assets/img3.png","assets/img4.png"];
-const galleryDiv = document.getElementById("gallery");
-galleryImages.forEach(src => { const img=document.createElement("img"); img.src=src; galleryDiv.appendChild(img); });
+const configs = [
+  { id:'viewer1', json:'./nemos/coffee_machine/points.json', images:['./nemos/coffee_machine/object0_0.jpg','./nemos/coffee_machine/object0_1.jpg','./nemos/coffee_machine/object0_2.jpg','./nemos/coffee_machine/object0_3.jpg'] },
+  { id:'viewer2', json:'./nemos/esspresso_mug_in_hand/points.json', images:['./nemos/esspresso_mug_in_hand/object0_0.jpg','./nemos/esspresso_mug_in_hand/object0_1.jpg','./nemos/esspresso_mug_in_hand/object0_2.jpg','./nemos/esspresso_mug_in_hand/object0_3.jpg'] },
+  { id:'viewer3', json:'./nemos/label_machine/points.json', images:['./nemos/label_machine/object0_0.jpg','./nemos/label_machine/object0_1.jpg','./nemos/label_machine/object0_2.jpg','./nemos/label_machine/object0_3.jpg'] },
+];
 
-let pcFiles=["assets/example1.pcd","assets/example2.pcd","assets/example3.pcd"]; let pcIndex=0;
-let scene=new THREE.Scene(); let renderer=new THREE.WebGLRenderer({antialias:true});
-renderer.setSize(850,500); document.getElementById("pcviewerDynamic").appendChild(renderer.domElement);
-let camera=new THREE.PerspectiveCamera(60,850/500,0.1,100); camera.position.set(1,1,1);
-let controls=new OrbitControls(camera,renderer.domElement);
-let loader=new PCDLoader(); let currentPoints=null;
-function loadPC(idx){ if(currentPoints) scene.remove(currentPoints); loader.load(pcFiles[idx], pts => { currentPoints=pts; scene.add(pts); }); }
-loadPC(pcIndex);
-function animate(){ requestAnimationFrame(animate); renderer.render(scene,camera); controls.update(); }
-animate();
-document.getElementById("prevPC").onclick=()=>{ if(pcIndex>0){ pcIndex--; loadPC(pcIndex);} };
-document.getElementById("nextPC").onclick=()=>{ if(pcIndex<pcFiles.length-1){ pcIndex++; loadPC(pcIndex);} };
+const viewers = configs.map(c => new PointCloudViewer(document.getElementById(c.id), c.json, c.images));
+
+const track = document.getElementById('carouselTrack');
+let currentIndex = 0;
+
+function updateCarousel() {
+  const offset = -currentIndex * 100;
+  track.style.transform = `translateX(${offset}%)`;
+  viewers[currentIndex].resizeAndRender();
+}
+
+document.getElementById('prev').onclick = () => { if(currentIndex > 0){ currentIndex--; updateCarousel(); } };
+document.getElementById('next').onclick = () => { if(currentIndex < viewers.length-1){ currentIndex++; updateCarousel(); } };
+
+updateCarousel();
 </script>
+
+<div class="section">
+  <h2>BibTeX</h2>
+  <div class="citation-box">@inproceedings{jung2026,title={Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception},author={Sebastian Jung and Leonard Klüpfel and Rudolph Triebel and Maximilian Durner},journal={3DV},year={2026}}</div>
+</div>
+
+<footer>© 2025 Sebastian Jung — Finding NeMO</footer>
+
 </body>
 </html>
-

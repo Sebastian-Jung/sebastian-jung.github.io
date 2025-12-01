@@ -153,6 +153,8 @@ export class PointCloudViewer {
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.08;
+        this.controls.autoRotate = true;
+        this.controls.autoRotateSpeed = -1.0;
 
         this.onWindowResize();
     }
