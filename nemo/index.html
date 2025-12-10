@@ -28,6 +28,7 @@ body { margin:0; font-family:'Inter', sans-serif; background:#fafafa; color:#333
 .section { max-width:900px; margin:40px auto; padding:0 20px; }
 h2 { font-size:32px; font-weight:700; margin-bottom:15px; }
 #teaser { width:100%; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+#architecture { width:100%;}
 .citation-box { background:#f0f0f0; padding:20px; border-radius:12px; font-family:monospace; }
 .carousel-container { position:relative; width:100%; max-width:900px; height:500px; overflow:hidden; border-radius:12px; background:#FFFFFF; margin:20px auto; }
 .carousel-track { display:flex; height:100%; transition:transform 0.5s ease; }
@@ -59,9 +60,16 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
   <p>We present <b>Neural Memory Object (NeMO)</b>, a novel object-centric representation that can be used to detect, segment and estimate the 6DoF pose of objects unseen during training using RGB images. Our method consists of an encoder that requires only a few RGB template views depicting an object to generate a sparse object-like point cloud using a learned UDF containing semantic and geometric information. Next, a decoder takes the object encoding together with a query image to generate a variety of dense predictions. Through extensive experiments, we show that our method can be used for few-shot object perception without requiring any camera-specific parameters or retraining on target data. Our proposed concept of outsourcing object information in a NeMO and using a single network for multiple perception tasks enhances interaction with novel objects, improving scalability and efficiency by enabling quick object onboarding without retraining or extensive pre-processing. We report competitive and state-of-the-art results on various datasets and perception tasks of the BOP benchmark, demonstrating the versatility of our approach. Code and synthetic dataset will be released.</p>
 </div>
 
+
+<div class="section" id="neural-memory-objects">
+  <h2>Neural Memory Objects</h2>
+  <p>Our novel encoder combines the information stored in a set of images into a unified, geometrically understandable representation. The encoder learns to predict the objects geometry as a 3D point cloud and associates semantic features with each point. We jointly learn a decoder that can use the NeMO encoding to predict an object centric pointmap in the coordinate system of the NeMO encoding, a modal and an amodal semantic mask.</p>
+  <img id="architecture" src="assets/architecture.png" alt="Architecture image">
+</div>
+
 <div class="section" id="pc-section">
-  <h2>Interactive Surface Estimation Examples</h2>
-  <p>Using the pointmap predictions of the NeMO Decoder, we can estimate object-centric surfaces using only a few images. Our method is able to robustly estimate camera poses and object surfaces in various settings - A static object and a moving camera, a static camera and an object rotated in hand and both moving cameras and the object being in different scenarios, including occlusion. We also show the estimated positions of the cameras relative to the object (not to scale):</p>
+  <h2>Surface and Pose Estimation</h2>
+  <p>Using the pointmap predictions of the NeMO Decoder, we can estimate object-centric surfaces and camera poses using only a few images. Our method is able to robustly estimate camera poses and object surfaces in various settings - A static object and a moving camera, a static camera and an object rotated in hand and both moving cameras and the object being in different scenarios, including occlusion. We also show the estimated positions of the cameras relative to the object (not to scale):</p>
   <div class="carousel-container">
     <div class="carousel-track" id="carouselTrack">
       <div class="viewer-wrapper" id="viewer1"></div>
@@ -98,6 +106,11 @@ document.getElementById('next').onclick = () => { if(currentIndex < viewers.leng
 
 updateCarousel();
 </script>
+
+<div class="section" id="segmentation">
+  <h2>Segmentation</h2>
+  <p>The decoder learns to predict modal and amodal object segmentation. We can predict amodal segmentation masks of new objects that have never been seen during training.</p>
+</div>
 
 <div class="section">
   <h2>BibTeX</h2>
