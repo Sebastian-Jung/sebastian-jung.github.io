@@ -83,3 +83,15 @@ body {
 .pc-nav-right:hover {
   background: rgba(0,0,0,0.15);
 }
+
+.segmentation-video {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+}
+
+/* Fix the arrows being squeezed to the left */
+#videoPrev { left: 0; }
+#videoNext { right: 0; }
