@@ -8,50 +8,41 @@
   gtag('js', new Date());
   gtag('config', 'G-V4WY96CK58');
 </script>
-<meta name="description" content="Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception. Code, paper, and examples for 3D object perception.">
+<meta name="description" content="Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception.">
 <meta name="keywords" content="3D vision, point cloud, few-shot learning, NeMO, computer vision">
 <meta name="author" content="Sebastian Jung">
-<meta name="robots" content="index, follow">
 <meta charset="UTF-8">
 <title>NeMO</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
 <style>
 body { margin:0; font-family:'Inter', sans-serif; background:#fafafa; color:#333; }
-.navbar { background:white; padding:20px 40px; box-shadow:0 2px 4px rgba(0,0,0,0.1); position:sticky; top:0; z-index:100; }
 .header { text-align:center; margin:60px 0 40px; }
 .title { font-size:40px; font-weight:700; }
 .authors { font-size:20px; color:#555; }
+.authors a { color: #0066cc; text-decoration: none; }
 .links a { margin:0 10px; font-weight:600; text-decoration:none; color:#0066cc; }
 .section { max-width:900px; margin:40px auto; padding:0 20px; }
 h2 { font-size:32px; font-weight:700; margin-bottom:15px; }
-#teaser { width:100%; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
-#architecture { width:100%;}
-#full_width_image { width: 100% }
-.citation-box { background:#f0f0f0; padding:20px; border-radius:12px; font-family:monospace; }
+#teaser, #architecture, #full_width_image { width:100%; border-radius:12px; }
+.citation-box { background:#f0f0f0; padding:20px; border-radius:12px; font-family:monospace; white-space: pre-wrap; }
 
-/* Carousel Styles - UPDATED TO WHITE */
+/* Carousel Styles */
 .carousel-container { position:relative; width:100%; max-width:900px; height:500px; overflow:hidden; border-radius:12px; background:#FFFFFF; margin:20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #eee; }
-.carousel-track { display:flex; height:100%; transition:transform 0.5s ease; width: 100%; }
+.carousel-track { display:flex; height:100%; transition:transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; }
 
-/* Point Cloud Track Wrappers */
-#carouselTrack .viewer-wrapper { flex:0 0 100%; height:100%; position: relative; overflow: hidden; background: #FFFFFF; }
+.viewer-wrapper { flex:0 0 100%; height:100%; position: relative; overflow: hidden; background: #FFFFFF; display: flex; align-items: center; justify-content: center; }
 
-/* Video Track Wrappers */
-#videoTrack .viewer-wrapper { flex:0 0 100%; height:100%; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #FFFFFF; }
+.arrow { position:absolute; top:0; width:50px; height:100%; background:rgba(0,0,0,0.02); border:none; cursor:pointer; font-size:40px; font-weight:bold; color:#333; display:flex; align-items:center; justify-content:center; z-index:20; transition: background 0.2s; }
+.arrow:hover { background:rgba(0,0,0,0.08); }
+.prev-btn { left:0; }
+.next-btn { right:0; }
 
-/* Arrows Fix - Adjusted for visibility on white */
-.arrow { position:absolute; top:0; width:50px; height:100%; background:rgba(0,0,0,0.05); border:none; cursor:pointer; font-size:40px; font-weight:bold; color:#333; display:flex; align-items:center; justify-content:center; z-index:10; }
-.arrow:hover { background:rgba(0,0,0,0.1); }
-#prev, #videoPrev { left:0; }
-#next, #videoNext { right:0; }
-
-/* Video Specific Styling */
-.segmentation-video { max-width: 100%; max-height: 100%; width: auto; height: auto; display: block; }
-
+.video { max-width: 100%; max-height: 100%; width: auto; height: auto; display: block; }
 footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
 </style>
+
+<link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96" />
 </head>
 <body>
 
@@ -59,13 +50,13 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
   <div class="title">Finding NeMO 🐠</div>
   <div class="subtitle">A Geometry-Aware Representation of Template Views for Few-Shot Perception</div>
   <div class="banner">🏆 3DV 2026 — Oral Presentation</div>
-  <br><br>
-  <div class="authors"><a href="../index.html">Sebastian Jung</a>, Leonard Klüpfel, Rudolph Triebel, Maximilian Durner</div>
-  <div class="links"><a href="paper.pdf">📄 Paper</a><a href="#">📝 arXiv</a><a href="https://github.com/DLR-RM/nemo">💻 Code</a><a href="#results">📊 Results</a></div>
+  <br>
+  <div class="authors"><a href="../index.html">Sebastian Jung</a>, <a href="https://scholar.google.com/citations?user=Tqik_XUAAAAJ&hl=de&oi=sra">Leonard Klüpfel</a>, <a href="https://scholar.google.com/citations?user=SuOUxjUAAAAJ&hl=de">Rudolph Triebel</a>, <a href="https://madurner.github.io/">Maximilian Durner</a></div>
+  <div class="links"><a href="paper.pdf">📄 Paper</a><a href="#">📝 arXiv</a><a href="https://github.com/DLR-RM/nemo">💻 Code</a></div>
 </div>
 
 <div class="section">
-  <img id="teaser" src="assets/teaser.png" alt="Teaser image">
+  <img id="teaser" src="assets/teaser.png" alt="Teaser">
 </div>
 
 <div class="section" id="abstract">
@@ -75,57 +66,71 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
 
 <div class="section" id="neural-memory-objects">
   <h2>Neural Memory Objects</h2>
-  <p>Our novel encoder combines the information stored in a set of images into a unified, geometrically understandable representation.</p>
+  
+  <p>Our novel encoder combines the information stored in a set of template images into a unified, geometrically understandable representation.</p>
   <img id="architecture" src="assets/architecture.png" alt="Architecture image">
-  <p>This combined representation allows for efficient inference speed, decoupled from the number of encoded template views.</p>
+  <p>Having an explicit object representation comes with many benefits:</p>
+  <h3>Continous Adaptation of the Object Geometry</h3>
+  <p>The explicit nature of the NeMO representation allows direct manipulation of the encoded object geometry, enabling continous improvements of the decoder predictions:</p>
+  <div class="carousel-container" style="height: 300px;">
+    <div class="carousel-track" id="trafoTrack">
+      <div class="viewer-wrapper">
+        <video class="video" poster="assets/nemo_trafo_espresso.mp4" autoplay muted loop playsinline>
+          <source src="assets/nemo_trafo_espresso.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="viewer-wrapper">
+        <video class="video" poster="assets/nemo_trafo_coffeemachine.mp4" autoplay muted loop playsinline>
+          <source src="assets/nemo_trafo_coffeemachine.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <button class="arrow prev-btn" id="trafoPrev">‹</button>
+    <button class="arrow next-btn" id="trafoNext">›</button>
+  </div>
+
+  <h3>Efficient Inference</h3>
+  <p>While the memory consumption of the encoder increases with the number of template images, the decoder has a constant memory footprint.</p>
   <img id="full_width_image" src="assets/num_temp_vs_mem_and_ap.png" alt="Number of Template Images vs Average Precision and Memory Consumption.">
+
 </div>
 
 <div class="section" id="pc-section">
   <h2>Surface and Pose Estimation</h2>
-  <p>Using the decoders object-centric pointmap prediction we can retrieve the camera pose relative to the object as well as its visible 3D surface.</p>
   <div class="carousel-container">
     <div class="carousel-track" id="carouselTrack">
       <div class="viewer-wrapper" id="viewer1"></div>
       <div class="viewer-wrapper" id="viewer2"></div>
       <div class="viewer-wrapper" id="viewer3"></div>
     </div>
-    <button class="arrow" id="prev">‹</button>
-    <button class="arrow" id="next">›</button>
+    <button class="arrow prev-btn" id="prev">‹</button>
+    <button class="arrow next-btn" id="next">›</button>
   </div>
 </div>
 
-<div class="section" id="segmentation">
-  <h2>Segmentation</h2>
-  <p>The decoder predicts modal and amodal segmentations of objects never seen during training.</p>
-  <p>The videos are shown in realtime. From left to right: Camera stream with 6D pose visualization overlay, predicted pointmap, pointmap confidence, modal segmentation mask, amodal segmentation mask.</p>
-  
+<div class="section" id="in-the-wild">
+  <h2>In-the-wild Application</h2>
+  <p>Without any finetuning, our method can be used on a variety of objects never seen during training. From capturing some template images to getting a 6D pose in just seconds, our method opens the door to scalable and efficient object perception.</p>
+  <p><a href="https://github.com/DLR-RM/nemo">Try it yourself!</a></p>
   <div class="carousel-container">
-    <div class="carousel-track" id="videoTrack">
-      <div class="viewer-wrapper">
-        <video class="segmentation-video" autoplay muted loop playsinline>
-          <source src="assets/bike_mug.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="viewer-wrapper">
-        <video class="segmentation-video" autoplay muted loop playsinline>
-          <source src="assets/dori.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="viewer-wrapper">
-        <video class="segmentation-video" autoplay muted loop playsinline>
-          <source src="assets/red_edding.mp4" type="video/mp4">
-        </video>
-      </div>
+    <div class="carousel-track" id="segTrack">
+      <div class="viewer-wrapper"><video class="video" autoplay muted loop playsinline><source src="assets/bike_mug.mp4" type="video/mp4"></video></div>
+      <div class="viewer-wrapper"><video class="video" autoplay muted loop playsinline><source src="assets/dori.mp4" type="video/mp4"></video></div>
+      <div class="viewer-wrapper"><video class="video" autoplay muted loop playsinline><source src="assets/red_edding.mp4" type="video/mp4"></video></div>
     </div>
-    <button class="arrow" id="videoPrev">‹</button>
-    <button class="arrow" id="videoNext">›</button>
+    <button class="arrow prev-btn" id="segPrev">‹</button>
+    <button class="arrow next-btn" id="segNext">›</button>
   </div>
 </div>
 
 <div class="section">
   <h2>BibTeX</h2>
-  <div class="citation-box">@inproceedings{jung2026,title={Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception},author={Sebastian Jung and Leonard Klüpfel and Rudolph Triebel and Maximilian Durner},journal={3DV},year={2026}}</div>
+  <div class="citation-box">@inproceedings{jung2026,
+  title={Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception},
+  author={Sebastian Jung and Leonard Klüpfel and Rudolph Triebel and Maximilian Durner},
+  journal={3DV},
+  year={2026}
+}</div>
 </div>
 
 <footer>© 2025 Sebastian Jung — Finding NeMO</footer>
@@ -145,34 +150,46 @@ let currentIndex = 0;
 
 function updateCarousel() {
   track.style.transform = `translateX(${-currentIndex * 100}%)`;
-  setTimeout(() => {
-    viewers[currentIndex].resizeAndRender();
-  }, 50);
+  setTimeout(() => viewers[currentIndex].resizeAndRender(), 50);
 }
+
+document.getElementById('prev').onclick = () => { if(currentIndex > 0){ currentIndex--; updateCarousel(); } };
+document.getElementById('next').onclick = () => { if(currentIndex < viewers.length-1){ currentIndex++; updateCarousel(); } };
 
 window.addEventListener('load', () => {
     viewers.forEach(v => v.resizeAndRender());
     updateCarousel();
 });
-
-document.getElementById('prev').onclick = () => { if(currentIndex > 0){ currentIndex--; updateCarousel(); } };
-document.getElementById('next').onclick = () => { if(currentIndex < viewers.length-1){ currentIndex++; updateCarousel(); } };
 </script>
 
 <script>
+// Generic function to initialize video carousels
+function setupVideoCarousel(trackId, prevId, nextId) {
+  const track = document.getElementById(trackId);
+  const prev = document.getElementById(prevId);
+  const next = document.getElementById(nextId);
+  if(!track || !prev || !next) return;
+
+  const slides = track.querySelectorAll('.viewer-wrapper');
+  let index = 0;
+
+  next.onclick = () => { 
+    if (index < slides.length - 1) { 
+      index++; 
+      track.style.transform = `translateX(${-index * 100}%)`; 
+    } 
+  };
+  prev.onclick = () => { 
+    if (index > 0) { 
+      index--; 
+      track.style.transform = `translateX(${-index * 100}%)`; 
+    } 
+  };
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  const vTrack = document.getElementById('videoTrack');
-  const vPrev = document.getElementById('videoPrev');
-  const vNext = document.getElementById('videoNext');
-  const vSlides = vTrack.querySelectorAll('.viewer-wrapper');
-  let vIndex = 0;
-
-  function updateVideo() {
-    vTrack.style.transform = `translateX(${-vIndex * 100}%)`;
-  }
-
-  vNext.onclick = () => { if (vIndex < vSlides.length - 1) { vIndex++; updateVideo(); } };
-  vPrev.onclick = () => { if (vIndex > 0) { vIndex--; updateVideo(); } };
+  setupVideoCarousel('trafoTrack', 'trafoPrev', 'trafoNext');
+  setupVideoCarousel('segTrack', 'segPrev', 'segNext');
 });
 </script>
 
