@@ -15,7 +15,7 @@
 <!-- SEO Meta Tags -->
 <title>Sebastian Jung - Computer Vision, 3D Object Perception & Robotics Research</title>
 <meta name="description" content="Sebastian Jung, PhD student at DLR and KIT, researches object-centric computer vision, 3D geometry understanding, and few-shot perception. Projects include NeMO and other academic research in robotics and AR.">
-<meta name="keywords" content="Sebastian Jung, NeMO, computer vision, 3D perception, robotics, few-shot learning, object-centric representation, augmented reality">
+<meta name="keywords" content="Sebastian Jung, NeMO, TAPNext++, point tracking, computer vision, 3D perception, robotics, few-shot learning, object-centric representation, augmented reality">
 <meta name="author" content="Sebastian Jung">
 <meta name="robots" content="index, follow">
 
@@ -175,6 +175,47 @@
                 margin-left: auto;
               ">
             <tbody>
+              <tr onmouseout="tapnext_stop()" onmouseover="tapnext_start()" bgcolor="#ffffd0">
+                <td style="padding: 16px; width: 20%; vertical-align: middle">
+                  <div class="one">
+                    <div class="two" id="tapnext_image">
+                      <img src="images/tapnext.gif" width="160" height="160" />
+                    </div>
+                    <img src="images/tapnext.jpg" width="160" height="160" />
+                  </div>
+                  <script type="text/javascript">
+                    function tapnext_start() {
+                      document.getElementById("tapnext_image").style.opacity = "1";
+                    }
+                    function tapnext_stop() {
+                      document.getElementById("tapnext_image").style.opacity = "0";
+                    }
+                    tapnext_stop();
+                  </script>
+                </td>
+                <td style="padding: 8px; width: 80%; vertical-align: middle">
+                  <a href="https://tap-next-plus-plus.github.io/">
+                    <span class="papertitle">TAPNext++: What's Next for Tracking Any Point?</span>
+                  </a>
+                  <br />
+                  <strong>Sebastian Jung</strong>, Artem Zholus, Martin Sundermeyer, Carl Doersch,
+                  Ross Goroshin, David Joseph Tan, Sarath Chandar, Rudolph Triebel, Federico Tombari
+                  <br />
+                  <em>CVPR Findings</em>, 2026
+                  <br />
+                  <a href="https://tap-next-plus-plus.github.io/">Project Page</a>
+                  /
+                  <a href="https://arxiv.org/abs/2604.10582">arXiv</a>
+                  /
+                  <a href="https://github.com/google-deepmind/tapnet">Code</a>
+                  <p></p>
+                  <p>
+                    State-of-the-art point tracking model for long video sequences. Enables re-detection
+                    after occlusion via roll augmentation and distributed sequence-parallel training on
+                    1024-frame videos, achieving up to 562 FPS throughput.
+                  </p>
+                </td>
+              </tr>
               <tr onmouseout="nemo_stop()" onmouseover="nemo_start()" bgcolor="#ffffd0">
                 <td style="padding: 16px; width: 20%; vertical-align: middle">
                   <div class="one">
@@ -210,6 +251,8 @@
                   <a href="./nemo/index.html">Project Page</a>
                   /
                   <a href="https://arxiv.org/abs/2602.04343">arXiv</a>
+                  /
+                  <a href="https://github.com/DLR-RM/nemo">Code</a>
                   <p></p>
                   <p>
                     An encoder-decoder architecture to generate a geometric, object centric representation. The decoder allows object
