@@ -222,13 +222,21 @@ h2.section-heading {
   text-align: center;
 }
 
-/* Mobile: stack bio photo below text */
+/* Mobile: stack bio photo above text */
 @media (max-width: 600px) {
   .bio-text {
     width: 100% !important;
     display: block;
   }
   .bio-photo {
-    display: none;
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center;
+    padding: 16px 0 0 0 !important;
+  }
+  .bio-photo img {
+    width: 140px !important;
+    max-width: 140px !important;
   }
 }
