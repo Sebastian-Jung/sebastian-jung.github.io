@@ -28,13 +28,13 @@ h2 { font-size:32px; font-weight:700; margin-bottom:15px; }
 .citation-box { background:#f0f0f0; padding:20px; border-radius:12px; font-family:monospace; white-space: pre-wrap; }
 
 /* Carousel Styles */
-.carousel-container { position:relative; width:100%; max-width:900px; height:500px; overflow:hidden; border-radius:12px; background:#FFFFFF; margin:20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #eee; }
+.carousel-container { position:relative; width:100%; max-width:900px; height:500px; overflow:hidden; border-radius:12px; background:#ffffff; margin:20px auto; box-shadow: 0 4px 16px rgba(0,0,0,0.08); border: 1px solid #e8e8e8; }
 .carousel-track { display:flex; height:100%; transition:transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; }
 
-.viewer-wrapper { flex:0 0 100%; height:100%; position: relative; overflow: hidden; background: #FFFFFF; display: flex; align-items: center; justify-content: center; }
+.viewer-wrapper { flex:0 0 100%; height:100%; position: relative; overflow: hidden; background: #ffffff; }
 
-.arrow { position:absolute; top:0; width:50px; height:100%; background:rgba(0,0,0,0.02); border:none; cursor:pointer; font-size:40px; font-weight:bold; color:#333; display:flex; align-items:center; justify-content:center; z-index:20; transition: background 0.2s; }
-.arrow:hover { background:rgba(0,0,0,0.08); }
+.arrow { position:absolute; top:0; width:48px; height:100%; background:rgba(255,255,255,0.0); border:none; cursor:pointer; font-size:36px; font-weight:300; color:rgba(0,0,0,0.35); display:flex; align-items:center; justify-content:center; z-index:20; transition: background 0.2s, color 0.2s; }
+.arrow:hover { background:rgba(0,0,0,0.05); color:rgba(0,0,0,0.8); }
 .prev-btn { left:0; }
 .next-btn { right:0; }
 
@@ -72,14 +72,14 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
   <p>Having an explicit object representation comes with many benefits:</p>
   <h3>Continous Adaptation of the Object Geometry</h3>
   <p>The explicit nature of the NeMO representation allows direct manipulation of the encoded object geometry, enabling continous improvements of the decoder predictions:</p>
-  <div class="carousel-container" style="height: 300px;">
+  <div class="carousel-container" style="height: 300px; background:#000; border-color:rgba(255,255,255,0.07);">
     <div class="carousel-track" id="trafoTrack">
-      <div class="viewer-wrapper">
+      <div class="viewer-wrapper" style="background:#000; display:flex; align-items:center; justify-content:center;">
         <video class="video" poster="assets/nemo_trafo_espresso.mp4" autoplay muted loop playsinline>
           <source src="assets/nemo_trafo_espresso.mp4" type="video/mp4">
         </video>
       </div>
-      <div class="viewer-wrapper">
+      <div class="viewer-wrapper" style="background:#000; display:flex; align-items:center; justify-content:center;">
         <video class="video" poster="assets/nemo_trafo_coffeemachine.mp4" autoplay muted loop playsinline>
           <source src="assets/nemo_trafo_coffeemachine.mp4" type="video/mp4">
         </video>
@@ -112,11 +112,11 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
   <h2>In-the-wild Application</h2>
   <p>Without any finetuning, our method can be used on a variety of objects never seen during training. From capturing some template images to getting a 6D pose in just seconds, our method opens the door to scalable and efficient object perception.</p>
   <p><a href="https://github.com/DLR-RM/nemo">Try it yourself!</a></p>
-  <div class="carousel-container">
+  <div class="carousel-container" style="background:#000; border-color:rgba(255,255,255,0.07);">
     <div class="carousel-track" id="segTrack">
-      <div class="viewer-wrapper"><video class="video" autoplay muted loop playsinline><source src="assets/bike_mug.mp4" type="video/mp4"></video></div>
-      <div class="viewer-wrapper"><video class="video" autoplay muted loop playsinline><source src="assets/dori.mp4" type="video/mp4"></video></div>
-      <div class="viewer-wrapper"><video class="video" autoplay muted loop playsinline><source src="assets/red_edding.mp4" type="video/mp4"></video></div>
+      <div class="viewer-wrapper" style="background:#000; display:flex; align-items:center; justify-content:center;"><video class="video" autoplay muted loop playsinline><source src="assets/bike_mug.mp4" type="video/mp4"></video></div>
+      <div class="viewer-wrapper" style="background:#000; display:flex; align-items:center; justify-content:center;"><video class="video" autoplay muted loop playsinline><source src="assets/dori.mp4" type="video/mp4"></video></div>
+      <div class="viewer-wrapper" style="background:#000; display:flex; align-items:center; justify-content:center;"><video class="video" autoplay muted loop playsinline><source src="assets/red_edding.mp4" type="video/mp4"></video></div>
     </div>
     <button class="arrow prev-btn" id="segPrev">‹</button>
     <button class="arrow next-btn" id="segNext">›</button>
