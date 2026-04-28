@@ -8,12 +8,51 @@
   gtag('js', new Date());
   gtag('config', 'G-V4WY96CK58');
 </script>
-<meta name="description" content="Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception.">
-<meta name="keywords" content="3D vision, point cloud, few-shot learning, NeMO, computer vision">
-<meta name="author" content="Sebastian Jung">
 <meta charset="UTF-8">
-<title>NeMO</title>
+<title>Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="NeMO encodes few RGB template views into a geometry-aware sparse 3D point cloud for 6DoF pose estimation, object detection, and segmentation — no retraining required. 3DV 2026 Oral.">
+<meta name="keywords" content="NeMO, few-shot object perception, 6DoF pose estimation, point cloud, neural memory object, object detection, segmentation, BOP benchmark, 3DV 2026">
+<meta name="author" content="Sebastian Jung, Leonard Klüpfel, Rudolph Triebel, Maximilian Durner">
+
+<!-- Canonical -->
+<link rel="canonical" href="https://sebastian-jung.github.io/nemo/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Finding NeMO">
+<meta property="og:title" content="Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception">
+<meta property="og:description" content="NeMO encodes few RGB template views into a geometry-aware sparse 3D point cloud for 6DoF pose estimation, object detection, and segmentation — no retraining required. 3DV 2026 Oral.">
+<meta property="og:url" content="https://sebastian-jung.github.io/nemo/">
+<meta property="og:image" content="https://sebastian-jung.github.io/nemo/assets/teaser.png">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception">
+<meta name="twitter:description" content="NeMO encodes few RGB template views into a geometry-aware sparse 3D point cloud for 6DoF pose estimation, object detection, and segmentation — no retraining required. 3DV 2026 Oral.">
+<meta name="twitter:image" content="https://sebastian-jung.github.io/nemo/assets/teaser.png">
+
+<!-- Structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "headline": "Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception",
+  "description": "NeMO encodes few RGB template views into a geometry-aware sparse 3D point cloud for 6DoF pose estimation, object detection, and segmentation without retraining on target data.",
+  "image": "https://sebastian-jung.github.io/nemo/assets/teaser.png",
+  "url": "https://sebastian-jung.github.io/nemo/",
+  "datePublished": "2026",
+  "author": [
+    {"@type": "Person", "name": "Sebastian Jung", "url": "https://sebastian-jung.github.io"},
+    {"@type": "Person", "name": "Leonard Klüpfel"},
+    {"@type": "Person", "name": "Rudolph Triebel"},
+    {"@type": "Person", "name": "Maximilian Durner", "url": "https://madurner.github.io/"}
+  ],
+  "publisher": {"@type": "Organization", "name": "3DV"},
+  "isPartOf": {"@type": "Event", "name": "International Conference on 3D Vision 2026"},
+  "sameAs": ["https://arxiv.org/abs/2602.04343", "https://github.com/DLR-RM/nemo"]
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.2/css/academicons.min.css">
@@ -23,7 +62,7 @@ p { line-height:1.72; font-size:16.5px; }
 
 /* Header — white full-bleed with bottom rule */
 .header { text-align:center; background:#fff; border-bottom:1px solid #ebebeb; padding:60px 20px 48px; margin-bottom:20px; }
-.title { font-size:40px; font-weight:700; }
+.title { font-size:40px; font-weight:700; margin:0; }
 .subtitle { font-size:24px; color:#555; margin-top:8px; font-weight:400; }
 .authors { font-size:18px; color:#555; margin-top:16px; }
 .authors a { color: #0066cc; text-decoration: none; }
@@ -99,7 +138,7 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
 <body>
 
 <div class="header">
-  <div class="title">Finding NeMO 🐠</div>
+  <h1 class="title">Finding NeMO 🐠</h1>
   <div class="subtitle">A Geometry-Aware Representation of Template Views for Few-Shot Perception</div>
   <div><span class="conf">3DV 2026 — Oral</span></div>
   <div class="authors"><a href="../index.html">Sebastian Jung</a>, <a href="https://scholar.google.com/citations?user=Tqik_XUAAAAJ&hl=de&oi=sra">Leonard Klüpfel</a>, <a href="https://scholar.google.com/citations?user=SuOUxjUAAAAJ&hl=de">Rudolph Triebel</a>, <a href="https://madurner.github.io/">Maximilian Durner</a></div>
@@ -111,7 +150,7 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
 </div>
 
 <div class="section">
-  <img id="teaser" src="assets/teaser.png" alt="Teaser">
+  <img id="teaser" src="assets/teaser.png" alt="NeMO teaser: few RGB template views encoded into a sparse 3D point cloud for 6DoF pose estimation and segmentation">
 </div>
 
 <div class="section" id="abstract">
@@ -123,7 +162,7 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
   <h2>Neural Memory Objects</h2>
   
   <p>Our novel encoder combines the information stored in a set of template images into a unified, geometrically understandable representation.</p>
-  <img id="architecture" src="assets/architecture.png" alt="Architecture image">
+  <img id="architecture" src="assets/architecture.png" alt="NeMO architecture: encoder combining RGB template views into a geometry-aware Neural Memory Object, decoder for pose estimation and segmentation">
   <p>Having an explicit object representation comes with many benefits:</p>
   <h3>Continuous Adaptation of the Object Geometry</h3>
   <p>The explicit nature of the NeMO representation allows direct manipulation of the encoded object geometry, enabling continuous improvements of the decoder predictions:</p>
@@ -202,11 +241,11 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
 
 <div class="section">
   <h2>BibTeX</h2>
-  <div class="citation-box">@inproceedings{jung2026,
-  title={Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception},
-  author={Sebastian Jung and Leonard Klüpfel and Rudolph Triebel and Maximilian Durner},
-  journal={3DV},
-  year={2026}
+  <div class="citation-box">@inproceedings{jung2026nemo,
+  title     = {Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception},
+  author    = {Jung, Sebastian and Klüpfel, Leonard and Triebel, Rudolph and Durner, Maximilian},
+  booktitle = {International Conference on 3D Vision (3DV)},
+  year      = {2026},
 }</div>
 </div>
 
