@@ -19,7 +19,10 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.2/css/academicons.min.css">
 <style>
 body { margin:0; font-family:'Inter', sans-serif; background:#fafafa; color:#333; }
-.header { text-align:center; margin:60px 0 40px; }
+p { line-height:1.72; font-size:16.5px; }
+
+/* Header — white full-bleed with bottom rule */
+.header { text-align:center; background:#fff; border-bottom:1px solid #ebebeb; padding:60px 20px 48px; margin-bottom:20px; }
 .title { font-size:40px; font-weight:700; }
 .subtitle { font-size:24px; color:#555; margin-top:8px; font-weight:400; }
 .authors { font-size:18px; color:#555; margin-top:16px; }
@@ -59,10 +62,22 @@ body { margin:0; font-family:'Inter', sans-serif; background:#fafafa; color:#333
 }
 .pub-btn:hover { background: #555; color: #fff; }
 
-.section { max-width:900px; margin:40px auto; padding:0 20px; }
-h2 { font-size:32px; font-weight:700; margin-bottom:15px; }
-#teaser, #architecture, #full_width_image { width:100%; border-radius:12px; }
-.citation-box { background:#f0f0f0; padding:20px; border-radius:12px; font-family:monospace; white-space: pre-wrap; }
+/* Sections */
+.section { max-width:900px; margin:60px auto; padding:0 20px; }
+h2 { font-size:32px; font-weight:700; margin-bottom:20px; position:relative; padding-bottom:12px; }
+h2::after { content:''; display:block; width:40px; height:3px; background:#0066cc; border-radius:2px; margin-top:8px; }
+h3 { font-size:20px; font-weight:600; margin:32px 0 10px; color:#222; }
+
+/* Images */
+#teaser, #architecture, #full_width_image { width:100%; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.08); display:block; }
+
+/* Citation */
+.citation-box { background:#f7f9fb; padding:22px 24px; border-radius:0 12px 12px 0; border-left:4px solid #0066cc; font-family:monospace; white-space:pre-wrap; font-size:14px; line-height:1.65; }
+
+/* Carousel dots */
+.carousel-dots { display:flex; justify-content:center; gap:8px; margin-top:12px; }
+.carousel-dot { width:8px; height:8px; border-radius:50%; background:#d0d0d0; border:none; padding:0; cursor:pointer; transition:background 0.2s, transform 0.2s; }
+.carousel-dot.active { background:#0066cc; transform:scale(1.3); }
 
 /* Carousel Styles */
 .carousel-wrapper { display:flex; align-items:center; gap:10px; margin:20px 0; }
@@ -101,7 +116,7 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
 
 <div class="section" id="abstract">
   <h2>Abstract</h2>
-  <p>We present <b>Neural Memory Object (NeMO)</b>, a novel object-centric representation that can be used to detect, segment and estimate the 6DoF pose of objects unseen during training using RGB images. Our method consists of an encoder that requires only a few RGB template views depicting an object to generate a sparse object-like point cloud using a learned UDF containing semantic and geometric information. Next, a decoder takes the object encoding together with a query image to generate a variety of dense predictions. Through extensive experiments, we show that our method can be used for few-shot object perception without requiring any camera-specific parameters or retraining on target data. Our proposed concept of outsourcing object information in a NeMO and using a single network for multiple perception tasks enhances interaction with novel objects, improving scalability and efficiency by enabling quick object onboarding without retraining or extensive pre-processing. We report competitive and state-ofthe-art results on various datasets and perception tasks of the BOP benchmark, demonstrating the versatility of our approach.</p>
+  <p>We present <b>Neural Memory Object (NeMO)</b>, a novel object-centric representation that can be used to detect, segment and estimate the 6DoF pose of objects unseen during training using RGB images. Our method consists of an encoder that requires only a few RGB template views depicting an object to generate a sparse object-like point cloud using a learned UDF containing semantic and geometric information. Next, a decoder takes the object encoding together with a query image to generate a variety of dense predictions. Through extensive experiments, we show that our method can be used for few-shot object perception without requiring any camera-specific parameters or retraining on target data. Our proposed concept of outsourcing object information in a NeMO and using a single network for multiple perception tasks enhances interaction with novel objects, improving scalability and efficiency by enabling quick object onboarding without retraining or extensive pre-processing. We report competitive and state-of-the-art results on various datasets and perception tasks of the BOP benchmark, demonstrating the versatility of our approach.</p>
 </div>
 
 <div class="section" id="neural-memory-objects">
@@ -110,8 +125,8 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
   <p>Our novel encoder combines the information stored in a set of template images into a unified, geometrically understandable representation.</p>
   <img id="architecture" src="assets/architecture.png" alt="Architecture image">
   <p>Having an explicit object representation comes with many benefits:</p>
-  <h3>Continous Adaptation of the Object Geometry</h3>
-  <p>The explicit nature of the NeMO representation allows direct manipulation of the encoded object geometry, enabling continous improvements of the decoder predictions:</p>
+  <h3>Continuous Adaptation of the Object Geometry</h3>
+  <p>The explicit nature of the NeMO representation allows direct manipulation of the encoded object geometry, enabling continuous improvements of the decoder predictions:</p>
   <div class="carousel-wrapper">
     <button class="carousel-btn" id="trafoPrev">‹</button>
     <div class="carousel-container" style="height: 300px; background:#000; border-color:rgba(255,255,255,0.07);">
@@ -129,6 +144,10 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
       </div>
     </div>
     <button class="carousel-btn" id="trafoNext">›</button>
+  </div>
+  <div class="carousel-dots" id="trafoDots">
+    <button class="carousel-dot active"></button>
+    <button class="carousel-dot"></button>
   </div>
 
   <h3>Efficient Inference</h3>
@@ -150,12 +169,19 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
     </div>
     <button class="carousel-btn" id="next">›</button>
   </div>
+  <div class="carousel-dots" id="pcDots">
+    <button class="carousel-dot active"></button>
+    <button class="carousel-dot"></button>
+    <button class="carousel-dot"></button>
+  </div>
 </div>
 
 <div class="section" id="in-the-wild">
   <h2>In-the-wild Application</h2>
   <p>Without any finetuning, our method can be used on a variety of objects never seen during training. From capturing some template images to getting a 6D pose in just seconds, our method opens the door to scalable and efficient object perception.</p>
-  <p><a href="https://github.com/DLR-RM/nemo">Try it yourself!</a></p>
+  <div style="margin-bottom:20px;">
+    <a href="https://github.com/DLR-RM/nemo" target="_blank" rel="noopener" class="pub-btn"><i class="fab fa-github"></i><span>Try it yourself!</span></a>
+  </div>
   <div class="carousel-wrapper">
     <button class="carousel-btn" id="segPrev">‹</button>
     <div class="carousel-container" style="background:#000; border-color:rgba(255,255,255,0.07);">
@@ -166,6 +192,11 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
       </div>
     </div>
     <button class="carousel-btn" id="segNext">›</button>
+  </div>
+  <div class="carousel-dots" id="segDots">
+    <button class="carousel-dot active"></button>
+    <button class="carousel-dot"></button>
+    <button class="carousel-dot"></button>
   </div>
 </div>
 
@@ -192,13 +223,16 @@ const configs = [
 
 const viewers = configs.map(c => new PointCloudViewer(document.getElementById(c.id), c.json, c.images));
 const track = document.getElementById('carouselTrack');
+const pcDotEls = document.querySelectorAll('#pcDots .carousel-dot');
 let currentIndex = 0;
 
 function updateCarousel() {
   track.style.transform = `translateX(${-currentIndex * 100}%)`;
+  pcDotEls.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
   setTimeout(() => viewers[currentIndex].resizeAndRender(), 50);
 }
 
+pcDotEls.forEach((d, i) => { d.onclick = () => { currentIndex = i; updateCarousel(); }; });
 document.getElementById('prev').onclick = () => { if(currentIndex > 0){ currentIndex--; updateCarousel(); } };
 document.getElementById('next').onclick = () => { if(currentIndex < viewers.length-1){ currentIndex++; updateCarousel(); } };
 
@@ -210,32 +244,30 @@ window.addEventListener('load', () => {
 
 <script>
 // Generic function to initialize video carousels
-function setupVideoCarousel(trackId, prevId, nextId) {
+function setupVideoCarousel(trackId, prevId, nextId, dotsId) {
   const track = document.getElementById(trackId);
   const prev = document.getElementById(prevId);
   const next = document.getElementById(nextId);
   if(!track || !prev || !next) return;
 
   const slides = track.querySelectorAll('.viewer-wrapper');
+  const dots = dotsId ? document.querySelectorAll('#' + dotsId + ' .carousel-dot') : [];
   let index = 0;
 
-  next.onclick = () => { 
-    if (index < slides.length - 1) { 
-      index++; 
-      track.style.transform = `translateX(${-index * 100}%)`; 
-    } 
-  };
-  prev.onclick = () => { 
-    if (index > 0) { 
-      index--; 
-      track.style.transform = `translateX(${-index * 100}%)`; 
-    } 
-  };
+  function go(i) {
+    index = i;
+    track.style.transform = `translateX(${-index * 100}%)`;
+    dots.forEach((d, j) => d.classList.toggle('active', j === index));
+  }
+
+  dots.forEach((d, i) => { d.onclick = () => go(i); });
+  next.onclick = () => { if (index < slides.length - 1) go(index + 1); };
+  prev.onclick = () => { if (index > 0) go(index - 1); };
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  setupVideoCarousel('trafoTrack', 'trafoPrev', 'trafoNext');
-  setupVideoCarousel('segTrack', 'segPrev', 'segNext');
+  setupVideoCarousel('trafoTrack', 'trafoPrev', 'trafoNext', 'trafoDots');
+  setupVideoCarousel('segTrack', 'segPrev', 'segNext', 'segDots');
 });
 </script>
 
