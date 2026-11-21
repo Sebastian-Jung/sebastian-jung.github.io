@@ -120,9 +120,15 @@ h2 {
   width: 160px;
   height: 160px;
   position: absolute;
+  opacity: 0;
   transition: opacity .2s ease-in-out;
   -moz-transition: opacity .2s ease-in-out;
   -webkit-transition: opacity .2s ease-in-out;
+}
+
+.two video {
+  display: block;
+  object-fit: fill;
 }
 
 .fade {

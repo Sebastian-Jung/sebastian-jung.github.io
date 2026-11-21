@@ -108,9 +108,13 @@ h2::after { content:''; display:block; width:40px; height:3px; background:#0066c
 h3 { font-size:20px; font-weight:600; margin:32px 0 10px; color:#222; }
 
 /* Images */
-#teaser, #architecture, #full_width_image { width:100%; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.08); display:block; }
+#teaser, #architecture, #full_width_image { width:100%; height:auto; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.08); display:block; }
 
 /* Citation */
+.citation-wrap { position:relative; }
+.copy-btn { position:absolute; top:10px; right:10px; display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:9999px; border:1px solid #d8d8d8; background:#fff; color:#555; font:500 13px 'Inter', sans-serif; cursor:pointer; transition:background 0.15s, color 0.15s, border-color 0.15s; }
+.copy-btn:hover { background:#f2f2f2; color:#111; }
+.copy-btn.copied { color:#1a7f37; border-color:#1a7f37; }
 .citation-box { background:#f7f9fb; padding:22px 24px; border-radius:0 12px 12px 0; border-left:4px solid #0066cc; font-family:monospace; white-space:pre-wrap; font-size:14px; line-height:1.65; }
 
 /* Carousel dots */
@@ -134,6 +138,10 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
 </style>
 
 <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="favicon/favicon.svg" />
+<link rel="shortcut icon" href="favicon/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png" />
+<link rel="manifest" href="favicon/site.webmanifest" />
 </head>
 <body>
 
@@ -143,7 +151,7 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
   <div><span class="conf">3DV 2026 — Oral</span></div>
   <div class="authors"><a href="../index.html">Sebastian Jung</a>, <a href="https://scholar.google.com/citations?user=Tqik_XUAAAAJ&hl=de&oi=sra">Leonard Klüpfel</a>, <a href="https://scholar.google.com/citations?user=SuOUxjUAAAAJ&hl=de">Rudolph Triebel</a>, <a href="https://madurner.github.io/">Maximilian Durner</a></div>
   <div class="links">
-    <a href="paper.pdf" class="pub-btn"><i class="fas fa-file-pdf"></i><span>Paper</span></a>
+    <a href="https://arxiv.org/pdf/2602.04343" target="_blank" rel="noopener" class="pub-btn"><i class="fas fa-file-pdf"></i><span>Paper</span></a>
     <a href="https://arxiv.org/abs/2602.04343" target="_blank" rel="noopener" class="pub-btn"><i class="ai ai-arxiv"></i><span>arXiv</span></a>
     <a href="https://github.com/DLR-RM/nemo" target="_blank" rel="noopener" class="pub-btn"><i class="fab fa-github"></i><span>Code</span></a>
     <a href="assets/3dv_poster.pdf" target="_blank" rel="noopener" class="pub-btn"><i class="fas fa-chalkboard"></i><span>Poster</span></a>
@@ -151,7 +159,7 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
 </div>
 
 <div class="section">
-  <img id="teaser" src="assets/teaser.png" alt="NeMO teaser: few RGB template views encoded into a sparse 3D point cloud for 6DoF pose estimation and segmentation">
+  <img id="teaser" width="620" height="243" src="assets/teaser.png" alt="NeMO teaser: few RGB template views encoded into a sparse 3D point cloud for 6DoF pose estimation and segmentation">
 </div>
 
 <div class="section" id="abstract">
@@ -163,7 +171,7 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
   <h2>Neural Memory Objects</h2>
   
   <p>Our novel encoder combines the information stored in a set of template images into a unified, geometrically understandable representation.</p>
-  <img id="architecture" src="assets/architecture.png" alt="NeMO architecture: encoder combining RGB template views into a geometry-aware Neural Memory Object, decoder for pose estimation and segmentation">
+  <img id="architecture" width="833" height="301" loading="lazy" src="assets/architecture.png" alt="NeMO architecture: encoder combining RGB template views into a geometry-aware Neural Memory Object, decoder for pose estimation and segmentation">
   <p>Having an explicit object representation comes with many benefits:</p>
   <h3>Continuous Adaptation of the Object Geometry</h3>
   <p>The explicit nature of the NeMO representation allows direct manipulation of the encoded object geometry, enabling continuous improvements of the decoder predictions:</p>
@@ -172,12 +180,12 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
     <div class="carousel-container" style="height: 300px; background:#000; border-color:rgba(255,255,255,0.07);">
       <div class="carousel-track" id="trafoTrack">
         <div class="viewer-wrapper" style="background:#000; display:flex; align-items:center; justify-content:center;">
-          <video class="video" poster="assets/nemo_trafo_espresso.mp4" autoplay muted loop playsinline>
+          <video class="video" poster="assets/nemo_trafo_espresso.jpg" muted loop playsinline preload="none">
             <source src="assets/nemo_trafo_espresso.mp4" type="video/mp4">
           </video>
         </div>
         <div class="viewer-wrapper" style="background:#000; display:flex; align-items:center; justify-content:center;">
-          <video class="video" poster="assets/nemo_trafo_coffeemachine.mp4" autoplay muted loop playsinline>
+          <video class="video" poster="assets/nemo_trafo_coffeemachine.jpg" muted loop playsinline preload="none">
             <source src="assets/nemo_trafo_coffeemachine.mp4" type="video/mp4">
           </video>
         </div>
@@ -192,7 +200,7 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
 
   <h3>Efficient Inference</h3>
   <p>While the memory consumption of the encoder increases with the number of template images, the decoder has a constant memory footprint.</p>
-  <img id="full_width_image" src="assets/num_temp_vs_mem_and_ap.png" alt="Number of Template Images vs Average Precision and Memory Consumption.">
+  <img id="full_width_image" width="1590" height="898" loading="lazy" src="assets/num_temp_vs_mem_and_ap.png" alt="Number of Template Images vs Average Precision and Memory Consumption.">
 
 </div>
 
@@ -226,9 +234,9 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
     <button class="carousel-btn" id="segPrev">‹</button>
     <div class="carousel-container" style="background:#000; border-color:rgba(255,255,255,0.07);">
       <div class="carousel-track" id="segTrack">
-        <div class="viewer-wrapper" style="background:#000; display:flex; align-items:center; justify-content:center;"><video class="video" autoplay muted loop playsinline><source src="assets/bike_mug.mp4" type="video/mp4"></video></div>
-        <div class="viewer-wrapper" style="background:#000; display:flex; align-items:center; justify-content:center;"><video class="video" autoplay muted loop playsinline><source src="assets/dori.mp4" type="video/mp4"></video></div>
-        <div class="viewer-wrapper" style="background:#000; display:flex; align-items:center; justify-content:center;"><video class="video" autoplay muted loop playsinline><source src="assets/red_edding.mp4" type="video/mp4"></video></div>
+        <div class="viewer-wrapper" style="background:#000; display:flex; align-items:center; justify-content:center;"><video class="video" poster="assets/bike_mug.jpg" muted loop playsinline preload="none"><source src="assets/bike_mug.mp4" type="video/mp4"></video></div>
+        <div class="viewer-wrapper" style="background:#000; display:flex; align-items:center; justify-content:center;"><video class="video" poster="assets/dori.jpg" muted loop playsinline preload="none"><source src="assets/dori.mp4" type="video/mp4"></video></div>
+        <div class="viewer-wrapper" style="background:#000; display:flex; align-items:center; justify-content:center;"><video class="video" poster="assets/red_edding.jpg" muted loop playsinline preload="none"><source src="assets/red_edding.mp4" type="video/mp4"></video></div>
       </div>
     </div>
     <button class="carousel-btn" id="segNext">›</button>
@@ -242,26 +250,29 @@ footer { text-align:center; padding:20px; margin-top:50px; color:#aaa; }
 
 <div class="section">
   <h2>BibTeX</h2>
-  <div class="citation-box">@inproceedings{jung2026nemo,
+  <div class="citation-wrap">
+  <button type="button" class="copy-btn" id="copyBibtex" aria-label="Copy BibTeX to clipboard"><i class="far fa-copy" aria-hidden="true"></i><span>Copy</span></button>
+  <div class="citation-box" id="bibtex">@inproceedings{jung2026nemo,
   title     = {Finding NeMO: A Geometry-Aware Representation of Template Views for Few-Shot Perception},
   author    = {Jung, Sebastian and Klüpfel, Leonard and Triebel, Rudolph and Durner, Maximilian},
   booktitle = {International Conference on 3D Vision (3DV)},
   year      = {2026},
 }</div>
+  </div>
 </div>
 
-<footer>© 2025 Sebastian Jung — Finding NeMO</footer>
+<footer>© 2026 Sebastian Jung — Finding NeMO</footer>
 
 <script type="module">
 import { PointCloudViewer } from './PointCloudViewer.js';
 
 const configs = [
-  { id:'viewer1', json:'./nemos/coffee_machine/points.json', images:['./nemos/coffee_machine/object0_0.jpg','./nemos/coffee_machine/object0_1.jpg','./nemos/coffee_machine/object0_2.jpg','./nemos/coffee_machine/object0_3.jpg'] },
-  { id:'viewer2', json:'./nemos/esspresso_mug_in_hand/points.json', images:['./nemos/esspresso_mug_in_hand/object0_0.jpg','./nemos/esspresso_mug_in_hand/object0_1.jpg','./nemos/esspresso_mug_in_hand/object0_2.jpg','./nemos/esspresso_mug_in_hand/object0_3.jpg'] },
-  { id:'viewer3', json:'./nemos/label_machine/points.json', images:['./nemos/label_machine/object0_0.jpg','./nemos/label_machine/object0_1.jpg','./nemos/label_machine/object0_2.jpg','./nemos/label_machine/object0_3.jpg'] },
+  { id:'viewer1', data:'./nemos/coffee_machine/points.bin', images:['./nemos/coffee_machine/object0_0.jpg','./nemos/coffee_machine/object0_1.jpg','./nemos/coffee_machine/object0_2.jpg','./nemos/coffee_machine/object0_3.jpg'] },
+  { id:'viewer2', data:'./nemos/esspresso_mug_in_hand/points.bin', images:['./nemos/esspresso_mug_in_hand/object0_0.jpg','./nemos/esspresso_mug_in_hand/object0_1.jpg','./nemos/esspresso_mug_in_hand/object0_2.jpg','./nemos/esspresso_mug_in_hand/object0_3.jpg'] },
+  { id:'viewer3', data:'./nemos/label_machine/points.bin', images:['./nemos/label_machine/object0_0.jpg','./nemos/label_machine/object0_1.jpg','./nemos/label_machine/object0_2.jpg','./nemos/label_machine/object0_3.jpg'] },
 ];
 
-const viewers = configs.map(c => new PointCloudViewer(document.getElementById(c.id), c.json, c.images));
+const viewers = configs.map((c, i) => new PointCloudViewer(document.getElementById(c.id), c.data, c.images, { active: i === 0 }));
 const track = document.getElementById('carouselTrack');
 const pcDotEls = document.querySelectorAll('#pcDots .carousel-dot');
 let currentIndex = 0;
@@ -269,21 +280,16 @@ let currentIndex = 0;
 function updateCarousel() {
   track.style.transform = `translateX(${-currentIndex * 100}%)`;
   pcDotEls.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
-  setTimeout(() => viewers[currentIndex].resizeAndRender(), 50);
+  viewers.forEach((v, i) => v.setActive(i === currentIndex));
 }
 
 pcDotEls.forEach((d, i) => { d.onclick = () => { currentIndex = i; updateCarousel(); }; });
 document.getElementById('prev').onclick = () => { if(currentIndex > 0){ currentIndex--; updateCarousel(); } };
 document.getElementById('next').onclick = () => { if(currentIndex < viewers.length-1){ currentIndex++; updateCarousel(); } };
-
-window.addEventListener('load', () => {
-    viewers.forEach(v => v.resizeAndRender());
-    updateCarousel();
-});
 </script>
 
 <script>
-// Generic function to initialize video carousels
+// Video carousels: only the active slide plays, and only while the carousel is on screen.
 function setupVideoCarousel(trackId, prevId, nextId, dotsId) {
   const track = document.getElementById(trackId);
   const prev = document.getElementById(prevId);
@@ -291,23 +297,71 @@ function setupVideoCarousel(trackId, prevId, nextId, dotsId) {
   if(!track || !prev || !next) return;
 
   const slides = track.querySelectorAll('.viewer-wrapper');
+  const videos = [...slides].map(s => s.querySelector('video'));
   const dots = dotsId ? document.querySelectorAll('#' + dotsId + ' .carousel-dot') : [];
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let index = 0;
+  let onScreen = false;
+
+  function sync() {
+    videos.forEach((v, j) => {
+      if (!v) return;
+      if (j === index && onScreen && !reduceMotion) {
+        v.preload = 'auto';
+        v.play().catch(() => {});
+      } else {
+        v.pause();
+      }
+    });
+  }
 
   function go(i) {
     index = i;
     track.style.transform = `translateX(${-index * 100}%)`;
     dots.forEach((d, j) => d.classList.toggle('active', j === index));
+    sync();
   }
+
+  new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; sync(); },
+                           { rootMargin: '200px 0px' }).observe(track);
 
   dots.forEach((d, i) => { d.onclick = () => go(i); });
   next.onclick = () => { if (index < slides.length - 1) go(index + 1); };
   prev.onclick = () => { if (index > 0) go(index - 1); };
 }
 
+function setupCopyButton(buttonId, sourceId) {
+  const btn = document.getElementById(buttonId);
+  const src = document.getElementById(sourceId);
+  if (!btn || !src) return;
+  const label = btn.querySelector('span');
+  let timer;
+
+  async function copy(text) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+    // Fallback for older browsers / non-HTTPS previews
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    const ok = document.execCommand('copy');
+    ta.remove();
+    if (!ok) throw new Error('copy failed');
+  }
+
+  btn.addEventListener('click', async () => {
+    let msg;
+    try { await copy(src.textContent.trim()); msg = 'Copied!'; btn.classList.add('copied'); }
+    catch { msg = 'Press Ctrl+C'; window.getSelection().selectAllChildren(src); }
+    label.textContent = msg;
+    clearTimeout(timer);
+    timer = setTimeout(() => { label.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   setupVideoCarousel('trafoTrack', 'trafoPrev', 'trafoNext', 'trafoDots');
   setupVideoCarousel('segTrack', 'segPrev', 'segNext', 'segDots');
+  setupCopyButton('copyBibtex', 'bibtex');
 });
 </script>
 

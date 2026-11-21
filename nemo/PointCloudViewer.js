@@ -1,4 +1,4 @@
-import * as THREE from './js/three.module.js';
+import * as THREE from './js/three.module.min.js';
 import { OrbitControls } from './js/OrbitControls.js';
 
 const STYLE_ID = 'pcv-global-styles';
@@ -86,10 +86,21 @@ function injectStyles() {
 }
 
 export class PointCloudViewer {
-    constructor(container, jsonUrl, imageUrls = []) {
+    constructor(container, dataUrl, imageUrls = [], { active = true } = {}) {
         this.container = container;
-        this.jsonUrl = jsonUrl;
+        this.dataUrl = dataUrl;
         this.imageUrls = imageUrls;
+
+        // The render loop runs only while the viewer is the active carousel
+        // slide AND on screen; otherwise it costs nothing.
+        this.active = active;
+        this.onScreen = false;
+        this._rafId = null;
+        this._tick = () => {
+            this._rafId = requestAnimationFrame(this._tick);
+            this.controls.update();
+            this.renderer.render(this.scene, this.camera);
+        };
 
         this.palette = [
             new THREE.Color(0.000, 0.447, 0.741),
@@ -107,8 +118,27 @@ export class PointCloudViewer {
         this._loadImages();
         this._loadPointCloud();
 
-        window.addEventListener('resize', () => this.resizeAndRender());
-        this._animate();
+        new ResizeObserver(() => this.resizeAndRender()).observe(this.container);
+        new IntersectionObserver(([entry]) => {
+            this.onScreen = entry.isIntersecting;
+            this._updateLoop();
+        }).observe(this.container);
+    }
+
+    setActive(active) {
+        this.active = active;
+        if (active) this.resizeAndRender();
+        this._updateLoop();
+    }
+
+    _updateLoop() {
+        const shouldRun = this.active && this.onScreen;
+        if (shouldRun && this._rafId === null) {
+            this._tick();
+        } else if (!shouldRun && this._rafId !== null) {
+            cancelAnimationFrame(this._rafId);
+            this._rafId = null;
+        }
     }
 
     _buildDOM() {
@@ -179,53 +209,62 @@ export class PointCloudViewer {
 
     resizeAndRender() {
         const [w, h] = this._canvasSize();
+        const dpr = Math.min(window.devicePixelRatio, 2);
+        this.renderer.setPixelRatio(dpr);
+        if (this.pointMaterial) this.pointMaterial.uniforms.uPixelRatio.value = dpr;
         this.renderer.setSize(w, h);
         this.camera.aspect = w / h;
         this.camera.updateProjectionMatrix();
         this.renderer.render(this.scene, this.camera);
     }
 
-    async _loadPointCloud() {
-        if (!this.jsonUrl) return;
-        try {
-            const resp = await fetch(this.jsonUrl);
-            const data = await resp.json();
-            const pts = data.points || [];
-            const cols = data.colors || [];
-            const poses = data.camera_poses || null;
+    // Binary layout (little-endian), written by the export script:
+    //   uint32 N, uint32 P, float32[P*16] camera poses (row-major 4x4),
+    //   float32[N*3] positions, uint8[N*3] colors
+    async _fetchPointCloud() {
+        const resp = await fetch(this.dataUrl);
+        if (!resp.ok) throw new Error(`${resp.status} ${resp.statusText} for ${this.dataUrl}`);
+        const buf = await resp.arrayBuffer();
+        const [n, p] = new Uint32Array(buf, 0, 2);
+        let off = 8;
+        const poseData = new Float32Array(buf, off, p * 16); off += p * 64;
+        const positions = new Float32Array(buf, off, n * 3); off += n * 12;
+        const colors = new Uint8Array(buf, off, n * 3);
+        const poses = [];
+        for (let i = 0; i < p; i++) {
+            const m = poseData.subarray(i * 16, i * 16 + 16);
+            poses.push([0, 1, 2, 3].map(r => [m[r*4], m[r*4+1], m[r*4+2], m[r*4+3]]));
+        }
+        return { positions, colors, poses };
+    }
 
-            const geometry = new THREE.BufferGeometry();
-            const positions = new Float32Array(pts.length * 3);
-            const vertColors = new Float32Array(pts.length * 3);
+    async _loadPointCloud() {
+        if (!this.dataUrl) return;
+        try {
+            const { positions, colors, poses } = await this._fetchPointCloud();
 
             let maxAbs = 0;
-            pts.forEach(p => maxAbs = Math.max(maxAbs, Math.abs(p[0]), Math.abs(p[1]), Math.abs(p[2])));
+            for (let i = 0; i < positions.length; i++) maxAbs = Math.max(maxAbs, Math.abs(positions[i]));
             const scl = maxAbs > 0 ? 1 / maxAbs : 1;
+            for (let i = 0; i < positions.length; i++) positions[i] *= scl;
 
-            for (let i = 0; i < pts.length; i++) {
-                positions[i*3+0] = pts[i][0] * scl;
-                positions[i*3+1] = pts[i][1] * scl;
-                positions[i*3+2] = pts[i][2] * scl;
-                const c = cols[i] || [1, 1, 1];
-                vertColors[i*3+0] = c[0] > 1 ? c[0]/255 : c[0];
-                vertColors[i*3+1] = c[1] > 1 ? c[1]/255 : c[1];
-                vertColors[i*3+2] = c[2] > 1 ? c[2]/255 : c[2];
-            }
-
+            const geometry = new THREE.BufferGeometry();
             geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            geometry.setAttribute('color', new THREE.BufferAttribute(vertColors, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3, true));
             geometry.computeBoundingSphere();
 
             const material = new THREE.ShaderMaterial({
                 vertexColors: true,
                 depthWrite: false,
                 transparent: true,
+                uniforms: { uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) } },
                 vertexShader: `
+                    uniform float uPixelRatio;
                     varying vec3 vColor;
                     void main() {
                         vColor = color;
                         vec4 mv = modelViewMatrix * vec4(position, 1.0);
-                        gl_PointSize = 0.02 * (300.0 / -mv.z);
+                        gl_PointSize = 0.02 * (300.0 / -mv.z) * uPixelRatio;
                         gl_Position = projectionMatrix * mv;
                     }
                 `,
@@ -240,6 +279,7 @@ export class PointCloudViewer {
                 `
             });
 
+            this.pointMaterial = material;
             this.scene.add(new THREE.Points(geometry, material));
 
             if (poses && poses.length) {
@@ -295,12 +335,7 @@ export class PointCloudViewer {
             requestAnimationFrame(() => this.resizeAndRender());
         } catch (err) {
             console.error('PointCloudViewer load error:', err);
+            this.loadingEl.textContent = 'Could not load point cloud.';
         }
-    }
-
-    _animate() {
-        requestAnimationFrame(() => this._animate());
-        this.controls.update();
-        this.renderer.render(this.scene, this.camera);
     }
 }
